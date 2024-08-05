@@ -27,6 +27,17 @@ h1 {
     font-weight: 400;
 }
 
+.dot {
+    width: 10px;
+    height: 10px;
+    background-color: #fec32d;
+    border-radius: 50%;
+}
+
+.dot2 {
+    background-color: transparent;
+}
+
 .scoreContainer {
     display: flex;
     font-size: 6rem;
