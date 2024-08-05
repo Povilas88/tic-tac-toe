@@ -29,6 +29,7 @@ for (let i = 0; i < boardBtnDOM.length; i++) {
         dot2DOM.style.backgroundColor = 'transparent';
         eventArray = Array(9).fill(null);
         resultMSG.innerHTML = '';
+        boardBtnDOM[i].disabled = false;
     });
 }
 
@@ -50,7 +51,9 @@ function checkWin() {
         if (eventArray[a] && eventArray[a] === eventArray[b] && eventArray[a] === eventArray[c]) {
             resultMSG.innerHTML = `Player ${eventArray[a]} wins!`;
             draw = false;
-            break;
+            for (let i = 0; i < boardBtnDOM.length; i++) {
+                boardBtnDOM[i].disabled = true;
+            }
         }
     }
     if (draw && !eventArray.includes(null)) {
