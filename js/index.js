@@ -6,8 +6,28 @@ const resultMsgDOM = document.querySelector('.resultContainer p');
 const dot1DOM = document.querySelector('.dot1')
 const dot2DOM = document.querySelector('.dot2')
 
+const storedArray = localStorage.getItem('eventArray');
 let eventArray = Array(9).fill(null);
-let lastClicked = '';
+
+if (storedArray !== null) {
+    eventArray = JSON.parse(storedArray);
+    for (let i = 0; i < boardBtnDOM.length; i++) {
+        if (eventArray[i]) {
+            boardBtnDOM[i].textContent = eventArray[i];
+            boardBtnDOM[i].style.color = eventArray[i] === 'X' ? '#0d6164' : '#f0f0f0';
+            dot1DOM.style.backgroundColor = eventArray[i] === 'X' ? '#fec32d' : 'transparent';
+            dot2DOM.style.backgroundColor = eventArray[i] === 'X' ? 'transparent' : '#fec32d';
+        }
+    }
+}
+
+let lastClicked = localStorage.getItem('lastClicked') || '';
+const dot1Color = localStorage.getItem('dot1Color') || 'transparent';
+const dot2Color = localStorage.getItem('dot2Color') || 'transparent';
+
+dot1DOM.style.backgroundColor = dot1Color;
+dot2DOM.style.backgroundColor = dot2Color;
+
 for (let i = 0; i < boardBtnDOM.length; i++) {
     boardBtnDOM[i].addEventListener('click', () => {
         if (!eventArray[i] && boardBtnDOM[i].textContent.length === 0) {
@@ -19,6 +39,9 @@ for (let i = 0; i < boardBtnDOM.length; i++) {
             eventArray[i] = lastClicked;
             checkWin();
             localStorage.setItem('eventArray', JSON.stringify(eventArray));
+            localStorage.setItem('lastClicked', lastClicked);
+            localStorage.setItem('dot1Color', dot1DOM.style.backgroundColor);
+            localStorage.setItem('dot2Color', dot2DOM.style.backgroundColor);
         }
     });
 }
@@ -29,8 +52,11 @@ function reset() {
         boardBtnDOM[i].disabled = false;
     }
     eventArray = Array(9).fill(null);
+    localStorage.setItem('eventArray', JSON.stringify(eventArray));
     dot1DOM.style.backgroundColor = '#fec32d';
     dot2DOM.style.backgroundColor = 'transparent';
+    localStorage.setItem('dot1Color', dot1DOM.style.backgroundColor);
+    localStorage.setItem('dot2Color', dot2DOM.style.backgroundColor);
     resultMsgDOM.innerHTML = '';
     lastClicked = '';
 }
