@@ -1,7 +1,8 @@
 const boardBtnDOM = document.querySelectorAll('.buttonContainer button');
 const playDOM = document.querySelectorAll('.resultBtn button')[0]
 const resetDOM = document.querySelectorAll('.resultBtn button')[1]
-const resultMSG = document.querySelector('.resultContainer p');
+const resultMsgDOM = document.querySelector('.resultContainer p');
+
 const dot1DOM = document.querySelector('.dot1')
 const dot2DOM = document.querySelector('.dot2')
 
@@ -28,8 +29,10 @@ for (let i = 0; i < boardBtnDOM.length; i++) {
         dot1DOM.style.backgroundColor = '#fec32d';
         dot2DOM.style.backgroundColor = 'transparent';
         eventArray = Array(9).fill(null);
-        resultMSG.innerHTML = '';
+        resultMsgDOM.innerHTML = '';
         boardBtnDOM[i].disabled = false;
+        teamXScoreDOM.innerText = parseInt(teamXScoreDOM.innerText = 0);
+        teamOScoreDOM.innerText = parseInt(teamOScoreDOM.innerText = 0);
     });
 }
 
@@ -44,12 +47,19 @@ const winCondition = [
     [2, 4, 6]
 ];
 
+let teamXScoreDOM = document.getElementById('teamXScore');
+let teamOScoreDOM = document.getElementById('teamOScore');
+
 function checkWin() {
     let draw = true;
     for (let condition of winCondition) {
         const [a, b, c] = condition;
         if (eventArray[a] && eventArray[a] === eventArray[b] && eventArray[a] === eventArray[c]) {
-            resultMSG.innerHTML = `Player ${eventArray[a]} wins!`;
+            resultMsgDOM.innerHTML = `Player ${eventArray[a]} wins!`;
+
+            const team = eventArray[a] === 'X' ? teamXScoreDOM : teamOScoreDOM;
+            team.innerText = parseInt(team.innerText) + 1;
+
             draw = false;
             for (let i = 0; i < boardBtnDOM.length; i++) {
                 boardBtnDOM[i].disabled = true;
@@ -57,10 +67,18 @@ function checkWin() {
         }
     }
     if (draw && !eventArray.includes(null)) {
-        resultMSG.innerHTML = `It's a DRAW!`;
+        resultMsgDOM.innerHTML = `It's a DRAW!`;
     }
 }
 
-playDOM.addEventListener('click', () => {
-    console.log(eventArray.length);
-});
+for (let i = 0; i < boardBtnDOM.length; i++) {
+    playDOM.addEventListener('click', () => {
+        boardBtnDOM[i].textContent = '';
+        lastClicked = '';
+        dot1DOM.style.backgroundColor = '#fec32d';
+        dot2DOM.style.backgroundColor = 'transparent';
+        eventArray = Array(9).fill(null);
+        resultMsgDOM.innerHTML = '';
+        boardBtnDOM[i].disabled = false;
+    });
+}
