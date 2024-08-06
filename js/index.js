@@ -1,22 +1,40 @@
+import { TicTacToe } from "./TicTacToe.js";
+new TicTacToe();
+
+/*
 const boardBtnDOM = document.querySelectorAll('.buttonContainer button');
-const playDOM = document.querySelectorAll('.resultBtn button')[0]
-const resetDOM = document.querySelectorAll('.resultBtn button')[1]
+const playDOM = document.getElementById('playButton');
+const resetDOM = document.getElementById('resetButton');
 const resultMsgDOM = document.querySelector('.resultContainer p');
 
-const dot1DOM = document.querySelector('.dot1')
-const dot2DOM = document.querySelector('.dot2')
+const dot1DOM = document.querySelector('.dot1');
+const dot2DOM = document.querySelector('.dot2');
 
+const storedMessage = localStorage.getItem('resultMsg');
 const storedArray = localStorage.getItem('eventArray');
 let eventArray = Array(9).fill(null);
+
+function lockButtons(condition) {
+    for (let i = 0; i < boardBtnDOM.length; i++) {
+        boardBtnDOM[i].disabled = condition;
+    }
+}
+
+if (storedMessage !== null) {
+    resultMsgDOM.innerHTML = storedMessage;
+}
 
 if (storedArray !== null) {
     eventArray = JSON.parse(storedArray);
     for (let i = 0; i < boardBtnDOM.length; i++) {
         if (eventArray[i]) {
             boardBtnDOM[i].textContent = eventArray[i];
-            boardBtnDOM[i].style.color = eventArray[i] === 'X' ? '#0d6164' : '#f0f0f0';
+            boardBtnDOM[i].style.color = eventArray[i] === 'X' ? '#f0f0f0' : '#0d6164';
             dot1DOM.style.backgroundColor = eventArray[i] === 'X' ? '#fec32d' : 'transparent';
             dot2DOM.style.backgroundColor = eventArray[i] === 'X' ? 'transparent' : '#fec32d';
+        }
+        if (resultMsgDOM.innerHTML.length > 0) {
+            lockButtons(true);
         }
     }
 }
@@ -49,7 +67,6 @@ for (let i = 0; i < boardBtnDOM.length; i++) {
 function reset() {
     for (let i = 0; i < boardBtnDOM.length; i++) {
         boardBtnDOM[i].textContent = '';
-        boardBtnDOM[i].disabled = false;
     }
     eventArray = Array(9).fill(null);
     localStorage.setItem('eventArray', JSON.stringify(eventArray));
@@ -57,8 +74,11 @@ function reset() {
     dot2DOM.style.backgroundColor = 'transparent';
     localStorage.setItem('dot1Color', dot1DOM.style.backgroundColor);
     localStorage.setItem('dot2Color', dot2DOM.style.backgroundColor);
+    localStorage.setItem('resultMsg', resultMsgDOM.innerHTML = '');
+    localStorage.setItem('lastClicked', '')
     resultMsgDOM.innerHTML = '';
     lastClicked = '';
+    lockButtons(false);
 }
 
 resetDOM.addEventListener('click', () => {
@@ -96,18 +116,14 @@ function checkWin() {
     for (let condition of winCondition) {
         const [a, b, c] = condition;
         if (eventArray[a] && eventArray[a] === eventArray[b] && eventArray[a] === eventArray[c]) {
-            for (let i = 0; i < boardBtnDOM.length; i++) {
-                boardBtnDOM[i].disabled = true;
-            }
-
             resultMsgDOM.innerHTML = `Player ${eventArray[a]} wins!`;
-
             const team = eventArray[a] === 'X' ? teamXScoreDOM : teamOScoreDOM;
             team.innerText = parseInt(team.innerText) + 1;
             draw = false;
-
+            lockButtons(true);
             localStorage.setItem('teamXScore', teamXScoreDOM.innerText);
             localStorage.setItem('teamOScore', teamOScoreDOM.innerText);
+            localStorage.setItem('resultMsg', resultMsgDOM.innerHTML);
             break;
         }
     }
@@ -119,3 +135,4 @@ function checkWin() {
 playDOM.addEventListener('click', () => {
     reset();
 });
+*/

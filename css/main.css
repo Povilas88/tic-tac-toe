@@ -71,6 +71,7 @@ h1 {
     text-align: justify;
     width: 20rem;
     gap: 15px;
+    font-size: 2rem;
 }
 
 .resultContainer p {
