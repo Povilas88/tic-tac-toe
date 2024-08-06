@@ -18,23 +18,30 @@ for (let i = 0; i < boardBtnDOM.length; i++) {
             lastClicked = lastClicked === 'X' ? 'O' : 'X';
             eventArray[i] = lastClicked;
             checkWin();
+            localStorage.setItem('eventArray', JSON.stringify(eventArray));
         }
     });
 }
 
-for (let i = 0; i < boardBtnDOM.length; i++) {
-    resetDOM.addEventListener('click', () => {
+function reset() {
+    for (let i = 0; i < boardBtnDOM.length; i++) {
         boardBtnDOM[i].textContent = '';
-        lastClicked = '';
-        dot1DOM.style.backgroundColor = '#fec32d';
-        dot2DOM.style.backgroundColor = 'transparent';
-        eventArray = Array(9).fill(null);
-        resultMsgDOM.innerHTML = '';
         boardBtnDOM[i].disabled = false;
-        teamXScoreDOM.innerText = parseInt(teamXScoreDOM.innerText = 0);
-        teamOScoreDOM.innerText = parseInt(teamOScoreDOM.innerText = 0);
-    });
+    }
+    eventArray = Array(9).fill(null);
+    dot1DOM.style.backgroundColor = '#fec32d';
+    dot2DOM.style.backgroundColor = 'transparent';
+    resultMsgDOM.innerHTML = '';
+    lastClicked = '';
 }
+
+resetDOM.addEventListener('click', () => {
+    reset();
+    localStorage.setItem('teamXScore', teamXScoreDOM.innerText = 0);
+    localStorage.setItem('teamOScore', teamOScoreDOM.innerText = 0);
+    teamXScoreDOM.innerText = parseInt(teamXScoreDOM.innerText = 0);
+    teamOScoreDOM.innerText = parseInt(teamOScoreDOM.innerText = 0);
+});
 
 const winCondition = [
     [0, 1, 2],
@@ -50,20 +57,32 @@ const winCondition = [
 let teamXScoreDOM = document.getElementById('teamXScore');
 let teamOScoreDOM = document.getElementById('teamOScore');
 
+const teamXScore = localStorage.getItem('teamXScore');
+const teamOScore = localStorage.getItem('teamOScore');
+
+if (teamXScore !== null && teamOScore !== null) {
+    teamXScoreDOM.innerText = localStorage.getItem('teamXScore');
+    teamOScoreDOM.innerText = localStorage.getItem('teamOScore');
+}
+
 function checkWin() {
     let draw = true;
     for (let condition of winCondition) {
         const [a, b, c] = condition;
         if (eventArray[a] && eventArray[a] === eventArray[b] && eventArray[a] === eventArray[c]) {
+            for (let i = 0; i < boardBtnDOM.length; i++) {
+                boardBtnDOM[i].disabled = true;
+            }
+
             resultMsgDOM.innerHTML = `Player ${eventArray[a]} wins!`;
 
             const team = eventArray[a] === 'X' ? teamXScoreDOM : teamOScoreDOM;
             team.innerText = parseInt(team.innerText) + 1;
-
             draw = false;
-            for (let i = 0; i < boardBtnDOM.length; i++) {
-                boardBtnDOM[i].disabled = true;
-            }
+
+            localStorage.setItem('teamXScore', teamXScoreDOM.innerText);
+            localStorage.setItem('teamOScore', teamOScoreDOM.innerText);
+            break;
         }
     }
     if (draw && !eventArray.includes(null)) {
@@ -71,14 +90,6 @@ function checkWin() {
     }
 }
 
-for (let i = 0; i < boardBtnDOM.length; i++) {
-    playDOM.addEventListener('click', () => {
-        boardBtnDOM[i].textContent = '';
-        lastClicked = '';
-        dot1DOM.style.backgroundColor = '#fec32d';
-        dot2DOM.style.backgroundColor = 'transparent';
-        eventArray = Array(9).fill(null);
-        resultMsgDOM.innerHTML = '';
-        boardBtnDOM[i].disabled = false;
-    });
-}
+playDOM.addEventListener('click', () => {
+    reset();
+});
