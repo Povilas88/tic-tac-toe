@@ -3,7 +3,7 @@ const myClass = new TicTacToe();
 
 export function wasd() {
     const buttons = document.querySelectorAll('.buttonContainer button');
-    let selectedIndex = 0;
+    let selectedIndex = 4;
 
     const buttonHighlight = () => {
         for (let index = 0; index < buttons.length; index++) {
@@ -31,12 +31,12 @@ export function wasd() {
         if (ev.keyCode === 27) {
             myClass.reset();
             myClass.resetExtra();
-            selectedIndex = 0;
+            selectedIndex = 4;
 
         }
         if (ev.keyCode === 13) {
             myClass.reset();
-            selectedIndex = 0;
+            selectedIndex = 4;
         }
         buttonHighlight();
     })
