@@ -63,6 +63,10 @@ h1 {
     background-color: #629ea0;
 }
 
+.buttonContainer button:focus {
+    outline: none;
+}
+
 .resultContainer {
     display: flex;
     flex-direction: column;

@@ -26,6 +26,7 @@ export function wasd() {
         }
         if (ev.key === ' ') {
             buttons[selectedIndex].click();
+            buttons[selectedIndex].focus();
         }
         if (ev.keyCode === 27) {
             myClass.reset();
