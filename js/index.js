@@ -1,6 +1,7 @@
 import { TicTacToe } from "./TicTacToe.js";
+import { wasd } from "./wasd.js";
 new TicTacToe();
-
+wasd();
 /*
 const boardBtnDOM = document.querySelectorAll('.buttonContainer button');
 const playDOM = document.getElementById('playButton');

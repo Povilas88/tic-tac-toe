@@ -41,7 +41,9 @@ export class TicTacToe {
     }
 
     loadGame() {
-        if (this.storedMessage) this.resultMsgDOM.innerHTML = this.storedMessage;
+        if (this.storedMessage) {
+            this.resultMsgDOM.innerHTML = this.storedMessage;
+        }
         if (this.storedArray) {
             this.eventArray = JSON.parse(this.storedArray);
             this.updateBoard();
@@ -60,8 +62,10 @@ export class TicTacToe {
             if (this.eventArray[i]) {
                 button.textContent = this.eventArray[i];
                 button.style.color = this.eventArray[i] === 'X' ? '#f0f0f0' : '#0d6164';
-                this.dot1DOM.style.backgroundColor = this.eventArray[i] === 'X' ? '#fec32d' : 'transparent';
-                this.dot2DOM.style.backgroundColor = this.eventArray[i] === 'X' ? 'transparent' : '#fec32d';
+                this.dot1DOM.style.backgroundColor = this.eventArray[i] === 'X'
+                    ? '#fec32d' : 'transparent';
+                this.dot2DOM.style.backgroundColor = this.eventArray[i] === 'X'
+                    ? 'transparent' : '#fec32d';
             }
             if (this.resultMsgDOM.innerHTML.length > 0) {
                 this.lockButtons(true);
@@ -86,6 +90,13 @@ export class TicTacToe {
         this.lockButtons(false);
     }
 
+    resetExtra() {
+        localStorage.setItem('teamXScore', this.teamXScoreDOM.innerText = 0);
+        localStorage.setItem('teamOScore', this.teamOScoreDOM.innerText = 0);
+        this.teamXScoreDOM.innerText = 0;
+        this.teamOScoreDOM.innerText = 0;
+    }
+
     addEventListeners() {
         for (let i = 0; i < this.boardBtnDOM.length; i++) {
             const button = this.boardBtnDOM[i];
@@ -93,8 +104,10 @@ export class TicTacToe {
                 if (!this.eventArray[i] && button.textContent.length === 0) {
                     button.textContent = this.lastClicked === 'X' ? 'O' : 'X';
                     button.style.color = this.lastClicked === 'X' ? '#0d6164' : '#f0f0f0';
-                    this.dot1DOM.style.backgroundColor = this.lastClicked === 'X' ? '#fec32d' : 'transparent';
-                    this.dot2DOM.style.backgroundColor = this.lastClicked === 'X' ? 'transparent' : '#fec32d';
+                    this.dot1DOM.style.backgroundColor = this.lastClicked === 'X'
+                        ? '#fec32d' : 'transparent';
+                    this.dot2DOM.style.backgroundColor = this.lastClicked === 'X'
+                        ? 'transparent' : '#fec32d';
                     this.lastClicked = this.lastClicked === 'X' ? 'O' : 'X';
                     this.eventArray[i] = this.lastClicked;
                     this.checkWin();
@@ -108,10 +121,7 @@ export class TicTacToe {
 
         this.resetDOM.addEventListener('click', () => {
             this.reset();
-            localStorage.setItem('teamXScore', this.teamXScoreDOM.innerText = 0);
-            localStorage.setItem('teamOScore', this.teamOScoreDOM.innerText = 0);
-            this.teamXScoreDOM.innerText = 0;
-            this.teamOScoreDOM.innerText = 0;
+            this.resetExtra();
         });
 
         this.playDOM.addEventListener('click', () => this.reset());
@@ -121,9 +131,11 @@ export class TicTacToe {
         let draw = true;
         for (let condition of this.winCondition) {
             const [a, b, c] = condition;
-            if (this.eventArray[a] && this.eventArray[a] === this.eventArray[b] && this.eventArray[a] === this.eventArray[c]) {
+            if (this.eventArray[a] && this.eventArray[a] === this.eventArray[b]
+                && this.eventArray[a] === this.eventArray[c]) {
                 this.resultMsgDOM.innerHTML = `Player ${this.eventArray[a]} wins!`;
-                const team = this.eventArray[a] === 'X' ? this.teamXScoreDOM : this.teamOScoreDOM;
+                const team = this.eventArray[a] === 'X'
+                    ? this.teamXScoreDOM : this.teamOScoreDOM;
                 team.innerText = parseInt(team.innerText) + 1;
                 draw = false;
                 this.lockButtons(true);
@@ -135,6 +147,7 @@ export class TicTacToe {
         }
         if (draw && !this.eventArray.includes(null)) {
             this.resultMsgDOM.innerHTML = `It's a DRAW!`;
+            localStorage.setItem('resultMsg', this.resultMsgDOM.innerHTML);
         }
     }
 }
